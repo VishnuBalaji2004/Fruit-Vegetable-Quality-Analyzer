@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quality Check AI</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <style>
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
+        .gradient-bg {
+            background: linear-gradient(-45deg, #ff7eb3, #8c52ff, #5ce1e6, #7ed957);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+
+        .float {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .pulse {
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        .progress-bar {
+            transition: width 1s ease-in-out;
+        }
+
+        .quality-indicator {
+            transition: all 0.3s ease;
+        }
+
+        .quality-indicator.excellent {
+            background: linear-gradient(45deg, #00f260, #0575e6);
+        }
+
+        .quality-indicator.good {
+            background: linear-gradient(45deg, #56ab2f, #a8e063);
+        }
+
+        .quality-indicator.fair {
+            background: linear-gradient(45deg, #f2994a, #f2c94c);
+        }
+
+        .quality-indicator.poor {
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+        }
+
+        .logo-container {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            margin: 0 auto;
+        }
+
+        .logo-circle {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 3px solid #8b5cf6;
+            animation: spin 20s linear infinite;
+        }
+
+        .logo-inner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #fff;
+            border-radius: 50%;
+            animation: sparkle 2s ease-in-out infinite;
+        }
+
+        .sparkle:nth-child(1) { top: 20%; left: 20%; animation-delay: 0s; }
+        .sparkle:nth-child(2) { top: 20%; right: 20%; animation-delay: 0.4s; }
+        .sparkle:nth-child(3) { bottom: 20%; left: 20%; animation-delay: 0.8s; }
+        .sparkle:nth-child(4) { bottom: 20%; right: 20%; animation-delay: 1.2s; }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen p-8">
+    <div class="max-w-4xl mx-auto">
+        <div class="glass rounded-2xl p-8 shadow-2xl">
+            <!-- Header with Watermelon Logo -->
+            <div class="text-center mb-10">
+                <div class="float inline-block mb-4">
+                    <div class="logo-container">
+                        <div class="logo-circle"></div>
+                        <div class="sparkle"></div>
+                        <div class="sparkle"></div>
+                        <div class="sparkle"></div>
+                        <div class="sparkle"></div>
+                        <div class="logo-inner">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-full h-full" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <!-- Watermelon outer shape -->
+                                <path d="M12 21a9 9 0 0 0 9-9A9 9 0 0 0 3 12a9 9 0 0 0 9 9z" 
+                                      stroke="#22c55e" stroke-width="2"/>
+                                <!-- Watermelon rind -->
+                                <path d="M12 21a9 9 0 0 0 9-9A9 9 0 0 0 3 12" 
+                                      stroke="#15803d" stroke-width="2.5"/>
+                                <!-- Watermelon pattern -->
+                                <circle cx="8" cy="14" r="1" fill="#ef4444"/>
+                                <circle cx="12" cy="16" r="1" fill="#ef4444"/>
+                                <circle cx="16" cy="14" r="1" fill="#ef4444"/>
+                                <circle cx="10" cy="12" r="1" fill="#ef4444"/>
+                                <circle cx="14" cy="12" r="1" fill="#ef4444"/>
+                                <!-- Quality check mark -->
+                                <path d="M8 12l3 3 6-6" 
+                                      stroke="#8b5cf6" stroke-width="2"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <h1 class="text-4xl font-bold mb-2 text-gray-800">Quality Check AI</h1>
+                <p class="text-gray-600">Advanced AI-powered quality analysis system</p>
+            </div>
+
+            <!-- Main Content -->
+            <div class="space-y-8">
+                <!-- Upload Section -->
+                <div class="pulse bg-white bg-opacity-50 rounded-xl p-6 text-center">
+                    <div class="mb-4">
+                        <input type="file" id="fileInput" class="hidden" accept="image/*">
+                        <label for="fileInput" class="cursor-pointer inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all duration-300">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                            </svg>
+                            Upload Image
+                        </label>
+                    </div>
+                    <p class="text-sm text-gray-500">or drag and drop your image here</p>
+                </div>
+
+                <!-- Webcam Section -->
+                <div class="space-y-4">
+                    <video id="webcam" autoplay playsinline class="w-[480px] h-[360px] rounded-xl hidden object-cover"></video>
+                    <canvas id="canvas" class="hidden"></canvas>
+                    <button id="webcamToggle" class="w-full px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors duration-300">
+                        Enable Webcam
+                    </button>
+                    <button id="captureBtn" class="w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-500 transition-colors duration-300 hidden">
+                        Capture Image
+                    </button>
+                </div>
+<!-- Results Section -->
+<div id="results" class="hidden space-y-6">
+    <div class="bg-white bg-opacity-50 rounded-xl p-6">
+        <h3 class="text-xl font-semibold mb-4 text-center">Analysis Results</h3>
+
+        <!-- Fresh vs. Rot Confidence Score -->
+        <div class="mb-6">
+            <div class="flex justify-between mb-2">
+                <span class="text-gray-700">Freshness Confidence</span>
+                <span id="freshRotConfidence" class="font-semibold">0%</span>
+            </div>
+            <div class="h-2 bg-gray-200 rounded-full">
+                <div id="freshRotBar" class="progress-bar h-2 rounded-full" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <!-- Ripe vs. Unripe Confidence Score -->
+        <div class="mb-6">
+            <div class="flex justify-between mb-2">
+                <span class="text-gray-700">Ripeness Confidence</span>
+                <span id="ripeUnripeConfidence" class="font-semibold">0%</span>
+            </div>
+            <div class="h-2 bg-gray-200 rounded-full">
+                <div id="ripeUnripeBar" class="progress-bar h-2 rounded-full" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <!-- Detailed Analysis in Box Layout -->
+        <!-- Detailed Analysis -->
+<div class="grid grid-cols-2 gap-4">
+    <div class="quality-indicator p-4 rounded-lg text-white bg-blue-500">
+        <h4 class="font-semibold">Freshness</h4>
+        <p id="freshRotResult">Analyzing...</p>
+    </div>
+    <div class="quality-indicator p-4 rounded-lg text-white bg-green-500">
+        <h4 class="font-semibold">Ripeness</h4>
+        <p id="ripeUnripeResult">Analyzing...</p>
+    </div>
+</div>
+
+    </div>
+
+    <!-- Analyzed Image -->
+    <div class="relative">
+        <img id="outputImage" class="w-full rounded-xl shadow-lg" src="" alt="Analyzed fruit">
+        <div id="loading" class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-xl hidden">
+            <div class="animate-spin rounded-full h-12 w-12 border-4 border-white border-t-transparent"></div>
+        </div>
+    </div>
+</div>
+            </div>
+        </div>
+    </div>
+    <audio id="alertSound">
+        <source src="static/alert.mp3" type="audio/mpeg">
+    </audio>
+    
+    <script>
+        const webcam = document.getElementById('webcam');
+        const canvas = document.getElementById('canvas');
+        const webcamToggle = document.getElementById('webcamToggle');
+        const captureBtn = document.getElementById('captureBtn');
+    
+        let stream = null; // Store webcam stream
+    
+       // 🚀 Toggle Webcam On/Off
+webcamToggle.addEventListener('click', async () => {
+    if (!stream) {
+        try {
+            stream = await navigator.mediaDevices.getUserMedia({
+                video: { width: 480, height: 360, aspectRatio: 4/3 } // ✅ Ensure the video resolution is correct
+            });            
+            webcam.srcObject = stream;
+            webcam.classList.remove('hidden');
+            captureBtn.classList.remove('hidden');
+            webcamToggle.textContent = "Disable Webcam";
+        } catch (err) {
+            console.error("❌ Error accessing webcam:", err);
+            alert("Could not access webcam. Please allow camera permissions.");
+        }
+    } else {
+        stopWebcam();
+    }
+});
+    
+        // 🚀 Stop Webcam Function
+        function stopWebcam() {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                stream = null;
+            }
+            webcam.classList.add('hidden');
+            captureBtn.classList.add('hidden');
+            webcamToggle.textContent = "Enable Webcam";
+        }
+    
+        // 🚀 Capture Image from Webcam
+        captureBtn.addEventListener('click', () => {
+            const context = canvas.getContext('2d');
+        
+            // ✅ Ensure canvas matches the video feed size dynamically
+            canvas.width = webcam.videoWidth;  
+            canvas.height = webcam.videoHeight;
+        
+            context.drawImage(webcam, 0, 0, canvas.width, canvas.height);
+        
+            // ✅ Match output image size
+            outputImage.width = canvas.width;
+            outputImage.height = canvas.height;
+        
+            const url = canvas.toDataURL("image/jpeg");
+            outputImage.src = url; // Display the captured image
+        
+            // Convert captured image to a File and send for processing
+            canvas.toBlob((blob) => {
+                const file = new File([blob], "webcam_capture.jpg", { type: "image/jpeg" });
+                processImage(file);
+            }, "image/jpeg");
+        
+            stopWebcam();
+        });
+        
+
+    
+        // File Upload Handling
+        const fileInput = document.getElementById('fileInput');
+        const results = document.getElementById('results');
+        const outputImage = document.getElementById('outputImage');
+        const loading = document.getElementById('loading');
+    
+        // Freshness & Ripeness UI Elements
+        const freshRotResult = document.getElementById('freshRotResult');
+        const freshRotConfidence = document.getElementById('freshRotConfidence');
+        const freshRotBar = document.getElementById('freshRotBar');
+    
+        const ripeUnripeResult = document.getElementById('ripeUnripeResult');
+        const ripeUnripeConfidence = document.getElementById('ripeUnripeConfidence');
+        const ripeUnripeBar = document.getElementById('ripeUnripeBar');
+    
+        fileInput.addEventListener('change', handleImage);
+    
+        function handleImage() {
+            const file = fileInput.files[0];
+            if (file) {
+                processImage(file);
+            }
+        }
+    
+        function processImage(file) {
+            results.classList.remove('hidden');
+            loading.classList.remove('hidden');
+    
+            // Show preview of uploaded image
+            const url = URL.createObjectURL(file);
+            outputImage.src = url;
+    
+            const formData = new FormData();
+            formData.append("file", file);
+    
+            // Send image to Flask for prediction
+            fetch("/predict", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    console.error("Server Error:", data.error);
+                    alert("Prediction failed: " + data.error);
+                    return;
+                }
+                updateUI(data);
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Prediction failed. Please try again.");
+            })
+            .finally(() => {
+                loading.classList.add('hidden');
+            });
+        }
+    
+        function updateUI(data) {
+            // ✅ Update Fresh/Rot result
+            freshRotResult.textContent = data.fresh_rot_class;
+            freshRotConfidence.textContent = `${data.fresh_rot_confidence.toFixed(1)}%`;
+            freshRotBar.style.width = `${data.fresh_rot_confidence}%`;
+            freshRotBar.style.background = getConfidenceColor(data.fresh_rot_confidence);
+    
+            // ✅ Update Ripe/Unripe result
+            ripeUnripeResult.textContent = data.ripe_unripe_class;
+            ripeUnripeConfidence.textContent = `${data.ripe_unripe_confidence.toFixed(1)}%`;
+            ripeUnripeBar.style.width = `${data.ripe_unripe_confidence}%`;
+            ripeUnripeBar.style.background = getConfidenceColor(data.ripe_unripe_confidence);
+
+
+            // ✅ Play alert sound if the fruit is Rot
+            if (data.fresh_rot_class === "Rot") 
+            {
+            document.getElementById('alertSound').play();
+            }
+        }
+    
+        function getConfidenceColor(value) {
+            if (value >= 90) return 'green';
+            if (value >= 75) return 'blue';
+            if (value >= 60) return 'yellow';
+            return 'red';
+        }
+    </script>
+    
+    
+    
+</body>
+</html>
