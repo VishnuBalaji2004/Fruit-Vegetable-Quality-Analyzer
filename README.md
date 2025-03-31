@@ -23,11 +23,14 @@ Experience the future of food quality assessment with **Fruit & Vegetable Qualit
 
 ```
 📦 fruit-quality-analyzer
-├──📄 index.html         # Frontend UI
+├──📂templates
+    ├──📄 index.html         # Frontend UI
+├──📂static
+    ├──📂uploads
+    ├──📄alerts.mp3
 ├── 📄 app.py             # Flask backend
-├── 📂 models
-│   ├── freshness_model.h5 # Freshness detection model
-│   ├── ripeness_model.h5  # Ripeness detection model
+│── freshness_model.h5 # Freshness detection model
+│── ripeness_model.h5  # Ripeness detection model
 ├── 📄 requirements.txt   # Dependencies
 └── 📄 README.md          # Project documentation
 ```
